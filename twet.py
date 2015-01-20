@@ -5,10 +5,10 @@ import MySQLdb
 import time
  
 # Consumer keys and access tokens, used for OAuth
-consumer_key = 'MExVvZT0Q35926Crko5wFrGdr'
-consumer_secret = 'YaK4JJ3w4xEHzE0DvOrQRuPsQjquIA5kqLB6i8McVkkRmaof53'
-access_token = '2874668814-M5Vh0eC2u9Tmjk4GkO814bGksAQ57AgZ3pdXsB3'
-access_token_secret = 'ean5rZki9KAwE3L5alxauTSMTyUFQYwG8enzSGNEKPxmm'
+consumer_key = ''
+consumer_secret = ''
+access_token = '2874668814-'
+access_token_secret = ''
  
 # OAuth process, using the keys and tokens
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
