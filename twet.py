@@ -2,7 +2,7 @@ import tweepy
 from tweepy.streaming import StreamListener
 from tweepy import Stream
 import MySQLdb
-
+import time
  
 # Consumer keys and access tokens, used for OAuth
 consumer_key = 'MExVvZT0Q35926Crko5wFrGdr'
@@ -13,6 +13,11 @@ access_token_secret = 'ean5rZki9KAwE3L5alxauTSMTyUFQYwG8enzSGNEKPxmm'
 # OAuth process, using the keys and tokens
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
+
+# Database Creation
+con=MySQLdb.connect('localhost','root','root','mysql')
+cur=con.cursor()
+
  
 # Creation of the actual interface, using authentication
 api = tweepy.API(auth)
@@ -52,12 +57,24 @@ print user.url
 #To get all tweets
 
 for status in tweepy.Cursor(api.user_timeline, id="mercuryminds").items():
-  print status.user.name
-  print status.lang
-  print status.created_at
-  print status.text
+  a= status.user.name
+  b= status.lang
+  c= status.created_at
+  x=status.text.encode('ascii','ignore').replace("'","")
 
+  try:
+      sql=("insert into tweet values('%s','%s','%s','%s')"%(a,b,c,x))
+      cur.execute(sql)
+      con.commit()
+  except tweepy.TweepError:
+      time.sleep(60 *15)
+      continue
+  except StopIteration:
+      break
 
+con.commit()
+cur.close()
+con.close()
 
 
 
