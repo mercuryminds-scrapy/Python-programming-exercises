@@ -57,28 +57,33 @@ print user.url
 #To get all tweets
 
 for status in tweepy.Cursor(api.user_timeline, id="mercuryminds").items():
-  a= status.user.name
-  b= status.lang
-  c= status.created_at
-  x=status.text.encode('ascii','ignore').replace("'","")
 
-  try:
-      sql=("insert into tweet values('%s','%s','%s','%s')"%(a,b,c,x))
-      cur.execute(sql)
-      con.commit()
-  except tweepy.TweepError:
-      time.sleep(60 *15)
-      continue
-  except StopIteration:
-      break
+
+    try:
+        a= status.retweeted_status.user.name
+    except:
+        a= status.user.name
+    b= status.lang
+    c= status.created_at
+    x=status.text.encode('ascii','ignore').replace("'","")
+
+    try:
+        sql=("insert into tweet(title,time,tweet) values('%s','%s','%s')"%(a,c,x))
+        cur.execute(sql)
+        con.commit()
+    except tweepy.TweepError:
+        time.sleep(60 *15)
+        continue
+    except StopIteration:
+        break
 
 con.commit()
 cur.close()
 con.close()
-
-
-
-
+#
+#
+#
+#
 
 class StdOutListener(StreamListener):
     ''' Handles data received from the stream. '''
