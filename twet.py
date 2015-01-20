@@ -1,6 +1,7 @@
 import tweepy
 from tweepy.streaming import StreamListener
 from tweepy import Stream
+import MySQLdb
 
  
 # Consumer keys and access tokens, used for OAuth
@@ -51,7 +52,10 @@ print user.url
 #To get all tweets
 
 for status in tweepy.Cursor(api.user_timeline, id="mercuryminds").items():
-    print status.text
+  print status.user.name
+  print status.lang
+  print status.created_at
+  print status.text
 
 
 
@@ -77,8 +81,8 @@ if __name__ == '__main__':
 
    stream = Stream(auth, listener)
 
-   stream.filter(follow=['2874668814'],track=[])
-#   stream.filter(track=['python', 'ruby', 'java'])
+#   stream.filter(follow=['2874668814'],track=[])
+##   stream.filter(track=['python', 'ruby', 'java'])
 
 
 
