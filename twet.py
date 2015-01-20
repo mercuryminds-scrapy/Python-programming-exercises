@@ -52,7 +52,7 @@ print user.url
 # for page in page_list:
 #     for status in page:
 #        print status.text
-
+#
 
 #To get all tweets
 
