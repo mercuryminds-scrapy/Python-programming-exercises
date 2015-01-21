@@ -182,3 +182,38 @@
 	}
 	echo "<p>There {$verb} {$flipCount} {$last}!</p>";
 	?>
+
+	$length = strlen("david");
+  print $length;
+
+
+
+$d="anandhakumar";
+echo substr($d,0,5);
+
+echo strtoupper($d)
+    echo strtolower($d)
+
+    $n="anandha";
+    echo strpos($n,"a");
+
+        if (strpos($n,"g")==false)
+    {
+        echo "not there";
+    }
+    print round(M_PI, 3);
+    $n="anandhakumar";
+
+
+
+    echo $n[rand(0,strlen($n))];
+
+       $a=array();
+    array_push($a,"anand");
+
+
+        $the_array=array(1,4,545,6,4,6,7,3);
+    sort($the_array);
+    print join(",", $the_array);
+ rsort($the_array);
+    print join(",",$the_array)
