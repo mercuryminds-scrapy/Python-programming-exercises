@@ -112,5 +112,73 @@
 
         $languages[3]="impccc";
         echo $languages[3];
+ $languages = array("HTML/CSS",
+        "JavaScript", "PHP", "Python", "Ruby");
+        // Write the code to remove Python here!
+
+        unset($languages{3});
+
+             foreach($languages as $lang) {
+          print "<p>$lang</p>";
       ?>
 
+  // Echoes the first five even numbers
+       for ($i = 2; $i < 11; $i = $i + 2) {
+          echo $i;
+
+
+
+
+ 	<?php
+	$headCount = 0;
+	$flipCount = 0;
+	while ($headCount < 3) {
+		$flip = rand(0,1);
+		$flipCount ++;
+		if ($flip){
+			$headCount ++;
+			echo "<div class=\"coin\">H</div>";
+		}
+		else {
+			$headCount = 0;
+			echo "<div class=\"coin\">T</div>";
+		}
+	}
+	echo "<p>It took {$flipCount} flips!</p>";
+
+
+
+	    $c=0;
+    while($c<4):
+
+        echo "<p>Iteration number: {$c}</p>";
+        $c++;
+    endwhile;
+
+
+
+	?>
+
+
+
+
+	<?php
+	$flipCount = 0;
+	do {
+		$flip = rand(0,1);
+		$flipCount ++;
+		if ($flip){
+			echo "<div class=\"coin\">H</div>";
+		}
+		else {
+			echo "<div class=\"coin\">T</div>";
+		}
+	} while ($flip);
+	$verb = "were";
+	$last = "flips";
+	if ($flipCount == 1) {
+		$verb = "was";
+		$last = "flip";
+	}
+	echo "<p>There {$verb} {$flipCount} {$last}!</p>";
+	?>
