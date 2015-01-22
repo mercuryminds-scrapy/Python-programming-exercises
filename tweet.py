@@ -36,24 +36,28 @@ api = tweepy.API(auth)
 
 
 """Pass twitter profile name as keword to tweet function"""
-def tweet(twitter_profile):
+def tweet(twitter_profile,business_id):
     fn='%s'%twitter_profile+'_tweets.csv'
     f=open(fn,'w')
-    f.write('Name\tTime\tTweet\n')
+    f.write('Business_ID\tName\tTime\tTweets\tRetweet_Count\tFav_count\n')
 
     tw=tweepy.Cursor(api.user_timeline, id=twitter_profile).items()
     while True:
         try:
             c= tw.next()
-            try:
-                a= c.retweeted_status.user.name
-            except:
-                a= c.user.name
-            b= c.created_at
-            d= c.text.encode('ascii','ignore').replace("'","").replace('\n','').replace('"','')
 
+            try:
+                a= c.retweeted_status.user.name.encode('utf-8')
+            except:
+                a= c.user.name.encode('utf-8')
+            b= c.created_at
+            d= c.text.encode('utf-8').replace("'","").replace('\n','').replace('"','')
+            fc= c.favorite_count
+            rt = c.retweet_count
+
+            print business_id,a,b,d,fc,rt
             """Insert the tweet details into the csv file"""
-            f.write('%s\t%s\t%s\n'%(a,b,d))
+            f.write('%s\t%s\t%s\t%s\t%s\t%s\n'%(business_id,a,b,d,fc,rt))
 
             """Create a tabel called tweet with 3 columns and insert the data by uncomment"""
             #sql=("insert into tweet(title,time,tweet) values('%s','%s','%s')"%(a,b,d))
@@ -62,7 +66,7 @@ def tweet(twitter_profile):
 
 
         except tweepy.TweepError:
-            print "Got Exception"
+            print "Got Exception Please wait for 15 Min to ReConnect"
             time.sleep(60 * 15)
             continue
         except StopIteration:
@@ -97,7 +101,7 @@ def tweet(twitter_profile):
 
 
 
-"""Pass the twitter profile name to get the whole tweets"""
+"""Pass the twitter profile name and Business_ID to get the whole tweets"""
 
 
-tweet('foodsafeguru')
+tweet('firebrewbar',10006)
