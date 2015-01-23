@@ -217,3 +217,22 @@ echo strtoupper($d)
     print join(",", $the_array);
  rsort($the_array);
     print join(",",$the_array)
+
+
+sudo -i -u postgres
+ createdb mm
+
+ psql
+mm         postgres   template0  template1
+postgres@MMTPC104:~$ psql -d mm
+
+
+select * from mmtweet;
+ create table mmtweet( id integer, username varchar(30), time timestamp, tweet text, r integer, f integer);
+alter user postgres with PASSWORD 'mercuryminds';
+
+
+
+insert into mmtweet values ('1','mm','2015-01-12 13:30:07
+mm'# ', 'Donât shy away from #mcommerce . Try it out today itself... http://t.co/ZEQwKy6ydv http://t.co/IMTosu1KT3'
+mm(# , 2, 1)

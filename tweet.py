@@ -1,37 +1,40 @@
 import tweepy
 import time
 from datetime import datetime
+import psycopg2
+
 
 """Un comment the below modules to get the real time tweets"""
-
 # from tweepy.streaming import StreamListener
 # from tweepy import Stream
 
-"""Un comment while passing the tweets to Mysql DB"""
-# import MySQLdb
 
 
 # Consumer keys and access tokens, used for OAuth
-consumer_key = ''
-consumer_secret = ''
-access_token = ''
-access_token_secret = ''
+consumer_key = 'oM6OieC09OJJLeVJ8UbZkJPJO'
+consumer_secret = 'z0YUK4NNpOoSSRhY9dJqjVLzPhhU0V38OvN7ELvurdhnfLZi8D'
+access_token = '2989212755-8KfCUDwcs8tdO27wme3qXCTnUnbBGooi85vdZoE'
+access_token_secret = 'AOAboTWRsOqAyfyIVIqQEWZicT7MkCMxhueSy600meu2M'
 
 
 # OAuth process, using the keys and tokens
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
-""" Database Creation"""
-# con=MySQLdb.connect('localhost','root','root','mysql')
-# cur=con.cursor()
-# Creation of the actual interface, using authentication
 api = tweepy.API(auth)
-"""To get all tweets from user timeline"""
-"""Pass twitter profile name as keword to tweet function"""
 
 
-def tweet(twitter_profile, business_id, x):
+""" Database Creation"""
+con = psycopg2.connect(database="mm", user="postgres", password="mercuryminds", host="localhost")
+cur = con.cursor()
+
+
+
+"""Getting tweets from user timeline"""
+
+def tweet(twitter_profile, business_id, last_tweet_time):
+
+    """Open file to save the data locally"""
     fn = '%s' % twitter_profile+'_tweets.csv'
     f = open(fn, 'w')
     f.write('Business_ID\tName\tTime\tTweets\tRetweet_Count\tFav_count\n')
@@ -40,29 +43,32 @@ def tweet(twitter_profile, business_id, x):
     while True:
         try:
             c = tw.next()
-            try:
-                a = c.retweeted_status.user.name.encode('utf-8')
-            except:
-                a = c.user.name.encode('utf-8')
-            b = c.created_at
+            user = c.user.name.encode('utf-8')
+            tm = c.created_at
 
-            d = c.text.encode('utf-8').replace("'", "").replace('\n', '').replace('"', '')
+            data = c.text.encode('utf-8').replace("'", "").replace('\n', '').replace('"', '')
             fc = c.favorite_count
             rt = c.retweet_count
-            try:
-                old_tweet_time = datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
-            except:
-                old_tweet_time = datetime.strptime('1', '%d')
-            if b > old_tweet_time:
-                print business_id, a, b, d, fc, rt
+            # try:
+            #     old_tweet_time = datetime.strptime(last_tweet_time, '%Y-%m-%d %H:%M:%S')
+            # except:
+            #     old_tweet_time = datetime.strptime('1', '%d')
+            if tm > last_tweet_time:
+                print business_id, user, tm, data, fc, rt
+
                 """Insert the tweet details into the csv file"""
-                f.write('%s\t%s\t%s\t%s\t%s\t%s\n' % (business_id, a, b, d, fc, rt))
-                """Create a tabel called tweet with 3 columns and insert the data by uncomment"""
+                
+                f.write('%s\t%s\t%s\t%s\t%s\t%s\n' % (business_id, user, tm, data, fc, rt))
+
+                """Insert data into DB"""
+
+                sql=("insert into public.mmtweet(id, username, time, tweet, r, f)  values('%s','%s','%s','%s','%s','%s')"%(business_id, user, tm, data, fc, rt))
+                cur.execute(sql)
+                con.commit()
+
             else:
                 break
-            # sql=("insert into tweet(title,time,tweet) values('%s','%s','%s')"%(a,b,d))
-            # cur.execute(sql)
-            # con.commit()
+
         except tweepy.TweepError:
             print "Got Exception Please wait for 15 Min to ReConnect"
             time.sleep(60 * 15)
@@ -71,9 +77,9 @@ def tweet(twitter_profile, business_id, x):
             break
 
 
-# con.commit()
-# cur.close()
-# con.close()
+
+
+
 #
 """Un comment the below class to get the real time tweets"""
 # class StdOutListener(StreamListener):
@@ -93,10 +99,61 @@ def tweet(twitter_profile, business_id, x):
 #    listener = StdOutListener()
 #
 #    stream = Stream(auth, listener)
+
+
+
 """Use the twitter Id to follow the realtime tweets follow=[' Id here']"""
 #   stream.filter(follow=['2874668814'],track=[])
-"""Pass the twitter profile name,Business_ID and last tweet time to get the whole tweets"""
 
-"""For Example ***tweet('firebrewbar',10004,'2015-01-20 01:25:51')  to get all tweets give empty string to tweet time(last arg)***"""
 
-tweet('firebrewbar', 10006, '2015-01-20 01:25:51')
+"""Checkdb function is to check the data into our DB"""
+
+def checkdb(tname):
+
+    """Get the Unique user name from the DB"""
+    sql = ("select distinct username from public.mmtweet")
+    cur.execute(sql)
+    rows = cur.fetchall()
+
+    de=[]
+    for r in rows:
+        de.append(r[0])
+#    """ de list has list of user names in our DB """
+
+    for i in range(len(de)):
+        if de[i].lower() == tname.lower():
+            print "Previoius Data Found for the given Twitter Profile name"
+            cur.execute("select distinct id from public.mmtweet where username='%s'"%de[i])
+            r=cur.fetchall()
+            b_id= r[0][0]
+            cur.execute("select max(time) from public.mmtweet")
+            r=cur.fetchall()
+            ti=r[0][0]
+            """Get the business_id and max(time) !"""
+            print b_id, ti
+            """Call the tweet function with username and  business_id and time from the DB"""
+            tweet(twitter_profile_name, b_id, ti)
+
+        else:
+            """No Previous Data in DB so Take all tweets"""
+            alltweets()
+    """Below If works if the DB is empty"""
+    if len(de)==0: alltweets()
+
+
+"""Get all tweets by calling alltweet function"""
+
+def alltweets():
+    print "No previous data for given profile\n"
+    b_id=input("Enter Business Id")
+    ti = datetime.strptime('1', '%d')
+    tweet(twitter_profile_name,b_id,ti)
+
+
+"""Enter the twitter Profile """
+twitter_profile_name='RKANANDHAKUMAR'
+
+checkdb(twitter_profile_name)
+
+"""DB connection close"""
+con.close()
