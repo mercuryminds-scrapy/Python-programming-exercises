@@ -43,7 +43,6 @@ def tweet(twitter_profile, business_id, last_tweet_time):
     while True:
         try:
             c = tw.next()
-            # print c
             user = c.user.screen_name.encode('utf-8')
             tm = c.created_at
 
@@ -54,6 +53,7 @@ def tweet(twitter_profile, business_id, last_tweet_time):
             #     old_tweet_time = datetime.strptime(last_tweet_time, '%Y-%m-%d %H:%M:%S')
             # except:
             #     old_tweet_time = datetime.strptime('1', '%d')
+
             if tm > last_tweet_time:
                 print business_id, user, tm, data, fc, rt
 
@@ -63,11 +63,11 @@ def tweet(twitter_profile, business_id, last_tweet_time):
 
                 """Insert data into DB"""
 
-                sql=("insert into public.tweet(id, username, time, tweet, r, f)  values('%s','%s','%s','%s','%s','%s')"%(business_id, user, tm, data, fc, rt))
+                sql = ("insert into public.tweet(id, username, time, tweet, r, f)  values('%s','%s','%s','%s','%s','%s')"%(business_id, user, tm, data, fc, rt))
                 cur.execute(sql)
                 con.commit()
 
-            elif tm==last_tweet_time:
+            elif tm == last_tweet_time:
                 print "No New Tweets Updated "
             else:
                 break
@@ -118,8 +118,8 @@ def checkdb(tname):
     cur.execute(sql)
     rows = cur.fetchall()
 
-    de=[]
-    li=[]
+    de = []
+    li = []
     for r in rows:
         de.append(r[0].lower())
         li.append(r[0])
@@ -129,13 +129,13 @@ def checkdb(tname):
 
     if tname.lower() in de:
         print "Previoius Data Found for the given Twitter Profile name"
-        j=de.index(tname.lower())
-        cur.execute("select distinct id from public.tweet where username='%s'"%li[j])
-        r=cur.fetchall()
-        b_id= r[0][0]
-        cur.execute("select max(time) from public.tweet")
-        r=cur.fetchall()
-        ti=r[0][0]
+        j = de.index(tname.lower())
+        cur.execute("select distinct id from public.tweet where username='%s'" % li[j])
+        r = cur.fetchall()
+        b_id = r[0][0]
+        cur.execute("select max(time) from public.tweet where id='%s'" % b_id)
+        r = cur.fetchall()
+        ti = r[0][0]
         """Get the business_id and max(time) !"""
         print b_id, ti
         """Call the tweet function with username and  business_id and time from the DB"""
@@ -145,7 +145,7 @@ def checkdb(tname):
         alltweets()
 
     """Below If works if the DB is empty"""
-    if len(de)==0:
+    if len(de) == 0:
         alltweets()
 
 
@@ -154,14 +154,14 @@ def checkdb(tname):
 
 def alltweets():
     print "No previous data for given profile\n"
-    b_id=input("Enter Business Id")
+    b_id = input("Enter Business Id")
     ti = datetime.strptime('1', '%d')
-    tweet(twitter_profile_name,b_id,ti)
+    tweet(twitter_profile_name, b_id, ti)
 
 
 
 """Enter the twitter Profile """
-twitter_profile_name='TSmoothieCafe'
+twitter_profile_name = 'firebrewva'
 
 checkdb(twitter_profile_name)
 

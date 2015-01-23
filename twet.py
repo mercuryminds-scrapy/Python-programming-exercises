@@ -22,7 +22,7 @@ cur=con.cursor()
  
 # Creation of the actual interface, using authentication
 api = tweepy.API(auth)
-user=api.get_user('TSmoothieCafe')
+user=api.get_user('radhaanandd')
 print user
 #user = api.me()
 
@@ -46,6 +46,13 @@ print user.statuses_count
 print user.url
 
 
+tw = tweepy.Cursor(api.user_timeline, id='practicalecomm').items()
+while True:
+    c = tw.next()
+    user = c.user.screen_name.encode('utf-8')
+    tm = c.created_at
+    data = c.text.encode('utf-8').replace("'", "").replace('\n', '').replace('"', '')
+    print data
 
 # page_list=[]
 #
