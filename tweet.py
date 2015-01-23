@@ -38,6 +38,7 @@ def tweet(twitter_profile, business_id, last_tweet_time):
     f = open(fn, 'w')
     f.write('Business_ID\tName\tTime\tTweets\tRetweet_Count\tFav_count\n')
 
+    # tw = tweepy.Cursor(api.user_timeline, id=twitter_profile).items()
     tw = tweepy.Cursor(api.user_timeline, id=twitter_profile).items()
     while True:
         try:
@@ -73,7 +74,7 @@ def tweet(twitter_profile, business_id, last_tweet_time):
 
         except tweepy.TweepError:
             print "Got Exception Please wait for 15 Min to ReConnect"
-            time.sleep(60 * 15)
+            time.sleep(61 * 15)
             continue
         except StopIteration:
             break
