@@ -43,7 +43,8 @@ def tweet(twitter_profile, business_id, last_tweet_time):
     while True:
         try:
             c = tw.next()
-            user = c.user.name.encode('utf-8')
+            # print c
+            user = c.user.screen_name.encode('utf-8')
             tm = c.created_at
 
             data = c.text.encode('utf-8').replace("'", "").replace('\n', '').replace('"', '')
@@ -57,15 +58,17 @@ def tweet(twitter_profile, business_id, last_tweet_time):
                 print business_id, user, tm, data, fc, rt
 
                 """Insert the tweet details into the csv file"""
-                
+
                 f.write('%s\t%s\t%s\t%s\t%s\t%s\n' % (business_id, user, tm, data, fc, rt))
 
                 """Insert data into DB"""
 
-                sql=("insert into public.mmtweet(id, username, time, tweet, r, f)  values('%s','%s','%s','%s','%s','%s')"%(business_id, user, tm, data, fc, rt))
+                sql=("insert into public.tweet(id, username, time, tweet, r, f)  values('%s','%s','%s','%s','%s','%s')"%(business_id, user, tm, data, fc, rt))
                 cur.execute(sql)
                 con.commit()
 
+            elif tm==last_tweet_time:
+                print "No New Tweets Updated "
             else:
                 break
 
@@ -111,7 +114,7 @@ def tweet(twitter_profile, business_id, last_tweet_time):
 def checkdb(tname):
 
     """Get the Unique user name from the DB"""
-    sql = ("select distinct username from public.mmtweet")
+    sql = ("select distinct username from public.tweet")
     cur.execute(sql)
     rows = cur.fetchall()
 
@@ -123,10 +126,10 @@ def checkdb(tname):
     for i in range(len(de)):
         if de[i].lower() == tname.lower():
             print "Previoius Data Found for the given Twitter Profile name"
-            cur.execute("select distinct id from public.mmtweet where username='%s'"%de[i])
+            cur.execute("select distinct id from public.tweet where username='%s'"%de[i])
             r=cur.fetchall()
             b_id= r[0][0]
-            cur.execute("select max(time) from public.mmtweet")
+            cur.execute("select max(time) from public.tweet")
             r=cur.fetchall()
             ti=r[0][0]
             """Get the business_id and max(time) !"""
@@ -151,9 +154,12 @@ def alltweets():
 
 
 """Enter the twitter Profile """
-twitter_profile_name='RKANANDHAKUMAR'
+twitter_profile_name='FirebrewVA'
 
 checkdb(twitter_profile_name)
 
 """DB connection close"""
 con.close()
+
+
+
