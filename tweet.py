@@ -73,7 +73,7 @@ def tweet(twitter_profile, business_id, last_tweet_time):
                 break
 
         except tweepy.TweepError:
-            print "Got Exception Please wait for 15 Min to ReConnect"
+            print "Got Exception Please wait for 15 Min to ReConnect or else the give profile is wrong"
             time.sleep(61 * 15)
             continue
         except StopIteration:
@@ -161,12 +161,9 @@ def alltweets():
 
 
 """Enter the twitter Profile """
-twitter_profile_name = 'firebrewva'
+twitter_profile_name = 'anandstarz'
 
 checkdb(twitter_profile_name)
 
 """DB connection close"""
 con.close()
-
-
-
