@@ -9,12 +9,11 @@ import psycopg2
 # from tweepy import Stream
 
 
-
 # Consumer keys and access tokens, used for OAuth
-consumer_key = 'oM6OieC09OJJLeVJ8UbZkJPJO'
-consumer_secret = 'z0YUK4NNpOoSSRhY9dJqjVLzPhhU0V38OvN7ELvurdhnfLZi8D'
-access_token = '2989212755-8KfCUDwcs8tdO27wme3qXCTnUnbBGooi85vdZoE'
-access_token_secret = 'AOAboTWRsOqAyfyIVIqQEWZicT7MkCMxhueSy600meu2M'
+consumer_key = 'MExVvZT0Q35926Crko5wFrGdr'
+consumer_secret = 'YaK4JJ3w4xEHzE0DvOrQRuPsQjquIA5kqLB6i8McVkkRmaof53'
+access_token = '2874668814-M5Vh0eC2u9Tmjk4GkO814bGksAQ57AgZ3pdXsB3'
+access_token_secret = 'ean5rZki9KAwE3L5alxauTSMTyUFQYwG8enzSGNEKPxmm'
 
 
 # OAuth process, using the keys and tokens
@@ -119,29 +118,35 @@ def checkdb(tname):
     rows = cur.fetchall()
 
     de=[]
+    li=[]
     for r in rows:
-        de.append(r[0])
+        de.append(r[0].lower())
+        li.append(r[0])
 #    """ de list has list of user names in our DB """
+    print de
+    print li
 
-    for i in range(len(de)):
-        if de[i].lower() == tname.lower():
-            print "Previoius Data Found for the given Twitter Profile name"
-            cur.execute("select distinct id from public.tweet where username='%s'"%de[i])
-            r=cur.fetchall()
-            b_id= r[0][0]
-            cur.execute("select max(time) from public.tweet")
-            r=cur.fetchall()
-            ti=r[0][0]
-            """Get the business_id and max(time) !"""
-            print b_id, ti
-            """Call the tweet function with username and  business_id and time from the DB"""
-            tweet(twitter_profile_name, b_id, ti)
+    if tname.lower() in de:
+        print "Previoius Data Found for the given Twitter Profile name"
+        j=de.index(tname.lower())
+        cur.execute("select distinct id from public.tweet where username='%s'"%li[j])
+        r=cur.fetchall()
+        b_id= r[0][0]
+        cur.execute("select max(time) from public.tweet")
+        r=cur.fetchall()
+        ti=r[0][0]
+        """Get the business_id and max(time) !"""
+        print b_id, ti
+        """Call the tweet function with username and  business_id and time from the DB"""
+        tweet(twitter_profile_name, b_id, ti)
+    else:
+        """No Previous Data in DB so Take all tweets"""
+        alltweets()
 
-        else:
-            """No Previous Data in DB so Take all tweets"""
-            alltweets()
     """Below If works if the DB is empty"""
-    if len(de)==0: alltweets()
+    if len(de)==0:
+        alltweets()
+
 
 
 """Get all tweets by calling alltweet function"""
@@ -153,8 +158,9 @@ def alltweets():
     tweet(twitter_profile_name,b_id,ti)
 
 
+
 """Enter the twitter Profile """
-twitter_profile_name='FirebrewVA'
+twitter_profile_name='TSmoothieCafe'
 
 checkdb(twitter_profile_name)
 

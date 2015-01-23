@@ -5,10 +5,11 @@ import MySQLdb
 import time
  
 # Consumer keys and access tokens, used for OAuth
-consumer_key = ''
-consumer_secret = ''
-access_token = '2874668814-'
-access_token_secret = ''
+
+consumer_key = 'oM6OieC09OJJLeVJ8UbZkJPJO'
+consumer_secret = 'z0YUK4NNpOoSSRhY9dJqjVLzPhhU0V38OvN7ELvurdhnfLZi8D'
+access_token = '2989212755-8KfCUDwcs8tdO27wme3qXCTnUnbBGooi85vdZoE'
+access_token_secret = 'AOAboTWRsOqAyfyIVIqQEWZicT7MkCMxhueSy600meu2M'
 
 # OAuth process, using the keys and tokens
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -66,16 +67,18 @@ for status in tweepy.Cursor(api.user_timeline, id="mercuryminds").items():
     b= status.lang
     c= status.created_at
     x=status.text.encode('ascii','ignore').replace("'","")
+    print x
 
-    try:
-        sql=("insert into tweet(title,time,tweet) values('%s','%s','%s')"%(a,c,x))
-        cur.execute(sql)
-        con.commit()
-    except tweepy.TweepError:
-        time.sleep(60 *15)
-        continue
-    except StopIteration:
-        break
+    #
+    # try:
+    #     sql=("insert into tweet(title,time,tweet) values('%s','%s','%s')"%(a,c,x))
+    #     cur.execute(sql)
+    #     con.commit()
+    # except tweepy.TweepError:
+    #     time.sleep(60 *15)
+    #     continue
+    # except StopIteration:
+    #     break
 
 con.commit()
 cur.close()
