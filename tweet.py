@@ -4,6 +4,7 @@ from datetime import datetime
 import psycopg2
 
 
+
 """Un comment the below modules to get the real time tweets"""
 # from tweepy.streaming import StreamListener
 # from tweepy import Stream
@@ -161,7 +162,7 @@ def alltweets():
 
 
 """Enter the twitter Profile """
-twitter_profile_name = 'anandstarz'
+twitter_profile_name = 'rparthiepan'
 
 checkdb(twitter_profile_name)
 
