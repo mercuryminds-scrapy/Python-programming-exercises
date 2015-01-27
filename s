@@ -219,7 +219,52 @@ echo strtoupper($d)
     print join(",",$the_array)
 
 
+
+
+    <?php
+        function greetings($name)
+        {
+            echo "Greetings, " .$name . "!";
+            }
+            greetings('anand');
+        ?>
+
+
+
+
+ <?php
+        // The code below creates the class
+        class Person {
+            // Creating some properties (variables tied to an object)
+            public $isAlive = true;
+            public $firstname;
+            public $lastname;
+            public $age;
+
+            // Assigning the values
+            public function __construct($firstname, $lastname, $age) {
+              $this->firstname = $firstname;
+              $this->lastname = $lastname;
+              $this->age = $age;
+            }
+
+            // Creating a method (function tied to an object)
+
+          }
+
+        // Creating a new person called "boring 12345", who is 12345 years old ;-)
+        $teacher = new Person('boring', '12345', 12345);
+        $student = new Person('aabording', 'a12345', 212345);
+
+        echo $student->age;
+
+        // Printing out, what the greet method returns
+        ?>
+
+
+
 sudo -i -u postgres
+
  createdb mm
 
  psql
