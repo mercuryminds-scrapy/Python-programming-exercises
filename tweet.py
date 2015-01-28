@@ -24,6 +24,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 
+
 """ Database Creation"""
 con = psycopg2.connect(database="mm", user="postgres", password="mercuryminds", host="localhost")
 cur = con.cursor()

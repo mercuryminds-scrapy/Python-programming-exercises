@@ -1,9 +1,6 @@
-__author__ = 'anandhakumar'
+_print " Enter Url here"
 
-
-print " Enter Url here"
-
-url ='http://www.urbanspoon.com/r/1/4524/restaurant/Capitol-Hill/Honey-Hole-Sandwiches-Seattle'
+url =['http://www.urbanspoon.com/r/1/4524/restaurant/Capitol-Hill/Honey-Hole-Sandwiches-Seattle','http://www.urbanspoon.com/r/1/4524/restaurant/Capitol-Hill/Honey-Hole-Sandwiches-Seattle','http://www.urbanspoon.com/r/13/169913/restaurant/North-Richland-Hills-Richland-Hills/Texs-Star-Grill-Watauga']
 
 from scrapy.spider import BaseSpider
 from scrapy.http import Request
@@ -11,6 +8,7 @@ from urlparse import urljoin
 from scrapy.selector import HtmlXPathSelector
 from urbans.items import UrbansItem
 import psycopg2
+import time
 
 
 """ Database Creation"""
@@ -21,7 +19,7 @@ class UrbansSpider(BaseSpider):
 
 
 	name = "urban"
-	start_urls=['%s'%url]
+	start_urls=[url[i] for i in range(len(url))]
 	f=open('opt.csv','w')
 
 	def parse(self, response):
@@ -46,7 +44,7 @@ class UrbansSpider(BaseSpider):
 		hxs = HtmlXPathSelector(response)
 
 		for i in range(20):
-			o=hxs.select('//div[@class="title"]/text()').extract()[i].encode('utf-8')
+			o=hxs.select('//div[@class="title"]/text()').extract()[i].encode('utf-8').replace("'","")
 			u= hxs.select('//a[@data-ga-action="user-profile-page"]/text()').extract()[i].encode('utf-8')
 			e=hxs.select('//time[@class="posted-on"]/text()').extract()[i].encode('utf-8').split(' ')[2].replace('\n','')
 			e1=time.strftime(e)
@@ -55,7 +53,11 @@ class UrbansSpider(BaseSpider):
 			item['rd'] =  hxs.select('//div[@itemprop="description"]/text()').extract()[i].encode('utf-8').replace('\n','').replace("'","").strip()
 			sql = ("insert into public.ep select %s,'%s','%s',%s,%s,'%s','%s','%s','%s' where not exists ( select * from public.ep where dc='%s' and us='%s')"%(item['bid'],item['u'],item['nv'],item['li'],item['nr'],e1,o,item['rd'],u,item['rd'],u))
 			cur.execute(sql)
-            con.commit()
+                	con.commit()
+
+
+
+
 
 
 
