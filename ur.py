@@ -61,20 +61,14 @@ class UrbansSpider(BaseSpider):
 
 
 
-
-<!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>CSS sprites</title>
-    <style>
+<head>
+<title> Sprites </title>
+<style>
 
 .rating-image {
-display: block;
 background: url(https://s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png) no-repeat;
 float: left;
-overflow: hidden;
-position: relative;
 width: 128px;
 height: 22px;
 }
@@ -96,10 +90,10 @@ background-position: -3px -739px;
 
 <div class="rating-image" id="star_4">
 
-    </div><br><br>
+    </div>
 <div class="rating-image" id="star_4_half">
 
-    </div><br><br>
+    </div>
 <div class="rating-image" id="star_5">
 
     </div>
