@@ -59,8 +59,6 @@ class UrbansSpider(BaseSpider):
 
 
 
-
-
 <html>
 <head>
 <title> Sprites </title>
