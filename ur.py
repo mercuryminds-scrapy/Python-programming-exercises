@@ -56,3 +56,50 @@ class UrbansSpider(BaseSpider):
 			sql = ("insert into public.ep select %s,'%s','%s',%s,%s,'%s','%s','%s','%s' where not exists ( select * from public.ep where dc='%s' and us='%s')"%(item['bid'],item['u'],item['nv'],item['li'],item['nr'],e1,o,item['rd'],u,item['rd'],u))
 			cur.execute(sql)
             con.commit()
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>CSS sprites</title>
+    <style>
+
+.rating-image {
+display: block;
+background: url(https://s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png) no-repeat;
+float: left;
+overflow: hidden;
+position: relative;
+width: 128px;
+height: 22px;
+}
+#star_4
+{
+background-position: -3px -689px;
+}
+#star_4_half
+{
+background-position: -3px -714px;
+}
+#star_5
+{
+background-position: -3px -739px;
+}
+</style>
+</head>
+<body>
+
+<div class="rating-image" id="star_4">
+
+    </div><br><br>
+<div class="rating-image" id="star_4_half">
+
+    </div><br><br>
+<div class="rating-image" id="star_5">
+
+    </div>
+</body>
+</html>
