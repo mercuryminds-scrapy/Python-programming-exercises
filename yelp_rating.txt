@@ -1,0 +1,38 @@
+<html>
+<head>
+<title> Sprites </title>
+<style>
+
+.rating-image {
+background: url(https://s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png) no-repeat;
+float: left;
+width: 128px;
+height: 22px;
+}
+#star_4
+{
+background-position: -3px -689px;
+}
+#star_4_half
+{
+background-position: -3px -714px;
+}
+#star_5
+{
+background-position: -3px -739px;
+}
+</style>
+</head>
+<body>
+
+<div class="rating-image" id="star_4">
+
+    </div>
+<div class="rating-image" id="star_4_half">
+
+    </div>
+<div class="rating-image" id="star_5">
+
+    </div>
+</body>
+</html>
