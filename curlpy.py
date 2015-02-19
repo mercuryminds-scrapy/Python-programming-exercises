@@ -19,3 +19,13 @@ file.write(the_page)
 file.close()
 resp.close()
 
+
+'Choose master branch'
+git checkout master
+'Get changes from Repository'
+git pull
+'Go to other branch"
+git checkout otherbranch
+'Update other branch from master'
+git pull origin master
+ssssssssssssssssss
