@@ -10,7 +10,7 @@ opener.addheaders.append( ('Referer', 'https://www.hscripts.com/tools/mailid-val
 
 login_data = urllib.urlencode({'email' : 'office@mos.org', 'start' : 'go'
                                })
-#ss
+#
 resp = opener.open('https://www.hscripts.com/tools/mailid-validation/', login_data)
 the_page = resp.read()
 
