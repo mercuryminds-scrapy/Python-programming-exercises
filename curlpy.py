@@ -28,4 +28,10 @@ git pull
 git checkout otherbranch
 'Update other branch from master'
 git pull origin master
-ssssssssssssssssss
+'if u make change in other branch'
+git add  ...
+git commit ...
+'commit into otherbranch'
+git push 
+
+
